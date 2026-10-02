@@ -1,127 +1,280 @@
-# FightIQ historical betting upgrade
+# FightIQ
 
-The existing Flask app, dark styling, fighter photos and attribution, live search,
-profiles, Compare, UFC fight history and analytics are retained. Historical odds
-are stored separately in the same SQLite database.
+FightIQ is a full-stack MMA analytics platform built with Python, Flask, SQLite, HTML, CSS, and JavaScript.
 
-## Run
+It combines fighter statistics, UFC fight history, head-to-head comparisons, historical betting analytics, charts, and data pipelines in one project.
 
-From the upgraded original project:
+## Screenshots
+
+### Home
+![FightIQ Home](screenshots/home.png)
+
+### Fighter Profile
+![Fighter Profile](screenshots/fighter-profile.png)
+
+### Compare
+![FightIQ Compare](screenshots/compare.png)
+
+### Betting Analytics
+![FightIQ Betting Analytics](screenshots/betting.png)
+
+## Features
+
+- Searchable MMA fighter database
+- Fighter profiles with career records and physical attributes
+- Fighter photos from Wikimedia/Wikidata when available
+- Striking statistics
+- Grappling statistics
+- UFC fight history
+- Head-to-head fighter comparison
+- Historical betting analytics
+- Favorite vs underdog performance
+- Historical upset rates
+- Odds bucket analysis
+- Division-based betting analytics
+- Fighter-specific betting history
+- Descriptive strengths and weaknesses
+- Responsive dark UI
+- SQLite database
+- Python ETL/data ingestion scripts
+- Automated tests
+
+## Tech Stack
+
+### Backend
+
+- Python
+- Flask
+- SQLite
+- Requests
+
+### Frontend
+
+- HTML
+- CSS
+- JavaScript
+- Jinja2
+
+### Data Engineering
+
+- CSV ingestion
+- HTTP data retrieval
+- Data cleaning
+- Data transformation
+- SQLite loading
+- Historical odds processing
+- Fighter and fight record normalization
+
+## Project Structure
+
+```text
+fightiq-mma-analytics/
+├── app.py
+├── betting.py
+├── import_fighters.py
+├── import_odds.py
+├── requirements.txt
+├── README.md
+├── data/
+│   └── ultimate_ufc_dataset.csv
+├── screenshots/
+│   ├── home.png
+│   ├── fighter-profile.png
+│   ├── compare.png
+│   └── betting.png
+├── static/
+│   └── style.css
+├── templates/
+│   ├── analytics.html
+│   ├── base.html
+│   ├── betting.html
+│   ├── compare.html
+│   ├── fighter_profile.html
+│   ├── fighters.html
+│   ├── index.html
+│   ├── _fighter_betting.html
+│   └── _metric_notes.html
+└── tests/
+```
+
+## Fighter Analytics
+
+Each fighter profile can include:
+
+- Career record
+- Height
+- Weight
+- Reach
+- Stance
+- Date of birth
+- Significant strikes landed per minute
+- Significant strikes absorbed per minute
+- Striking accuracy
+- Strike defense
+- Takedown average
+- Takedown accuracy
+- Takedown defense
+- Submission average
+- UFC fight history
+- Historical favorite/underdog performance
+- Descriptive strengths and weaknesses
+
+## Fighter Comparison
+
+FightIQ allows users to search for two fighters and compare them side by side.
+
+Comparison metrics include:
+
+- Record
+- Height
+- Reach
+- Stance
+- Striking accuracy
+- Striking volume
+- Strike defense
+- Takedown average
+- Takedown accuracy
+- Takedown defense
+- Submission activity
+- Historical betting context
+
+## Historical Betting Analytics
+
+FightIQ includes descriptive historical betting analytics such as:
+
+- Favorite wins and losses
+- Underdog wins and losses
+- Historical upset rate
+- Favorite win rate
+- Underdog win rate
+- Performance by odds range
+- Division-based upset rates
+- Fighter favorite/underdog history
+- Historical odds trends
+
+These statistics are historical analytics only and are not guarantees, predictions, or betting recommendations.
+
+## Historical Betting Dataset
+
+Source: TidyTuesday UFC data, July 7, 2026 — `ultimate_ufc_dataset.csv`.
+
+The bundled snapshot contains historical UFC betting and fight data and is used for reproducible analysis.
+
+Historical odds are analyzed using valid American moneylines. Favorite and underdog roles are determined using implied probability.
+
+The betting section includes favorite win percentage, underdog upset percentage, win rates by odds range, division-level upset rates, fighter betting history, largest recorded historical upsets, and year-based trends.
+
+The data is historical and should not be interpreted as live odds or future predictions.
+
+## Data Sources
+
+FightIQ uses publicly available MMA datasets containing fighter statistics, UFC fight history, and historical betting odds.
+
+The project also uses Wikimedia/Wikidata for fighter images where available.
+
+## Data Pipeline
+
+```text
+Public datasets / APIs
+        ↓
+Python ingestion scripts
+        ↓
+Cleaning and normalization
+        ↓
+SQLite database
+        ↓
+Flask backend
+        ↓
+Jinja templates
+        ↓
+FightIQ web interface
+```
+
+## Installation
+
+Clone the repository:
 
 ```bash
-cd /Users/yousefaladwan/Desktop/weather-data-pipeline/fightiq-mma-analytics
+git clone https://github.com/Adwan2006/fightiq-mma-analytics.git
+```
+
+Enter the project:
+
+```bash
+cd fightiq-mma-analytics
+```
+
+Create a virtual environment:
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
 python3 -m pip install -r requirements.txt
-python3 app.py
 ```
 
-Open http://127.0.0.1:5000/betting. The database already contains the imported
-historical odds; no import is needed to view them. If port 5000 is occupied:
-
-```bash
-python3 -m flask --app app run --port 5055
-```
-
-Refresh historical odds from the public source:
-
-```bash
-python3 import_odds.py
-```
-
-Reimport the bundled, reproducible snapshot without a network connection:
-
-```bash
-python3 import_odds.py --csv data/ultimate_ufc_dataset.csv
-```
-
-Refresh the original fighter metrics and UFC fight history:
+Build or refresh fighter data:
 
 ```bash
 python3 import_fighters.py
 ```
 
-This importer now creates missing tables and updates fighters by slug while
-preserving existing IDs and cached photo fields. Existing fights and historical
-odds remain intact. Refreshes add/update source records rather than deleting
-records absent from a later source. The two importers are independent: run both
-when refreshing both sources. The historical CSV command also accepts
-`--database /absolute/path/to/another.db`.
+Import historical odds:
 
-Run the tests:
+```bash
+python3 import_odds.py
+```
+
+Or use the bundled snapshot:
+
+```bash
+python3 import_odds.py --csv data/ultimate_ufc_dataset.csv
+```
+
+Start FightIQ:
+
+```bash
+python3 app.py
+```
+
+Open:
+
+```text
+http://127.0.0.1:5000
+```
+
+## Main Pages
+
+- Home: `/`
+- Fighters: `/fighters`
+- Compare: `/compare`
+- Analytics: `/analytics`
+- Betting Analytics: `/betting`
+
+## Testing
+
+Run the test suite:
 
 ```bash
 python3 -m unittest discover -s tests -v
 ```
 
-## Changed files
+## Project Goals
 
-- `app.py`: Betting route, template helpers and formatting; database path now
-  resolves beside the app regardless of the launch directory.
-- `betting.py` (new): normalization, American odds validation, role assignment,
-  exclusions, overall/year/division/bucket analytics, fighter history and
-  descriptive metric thresholds.
-- `import_odds.py` (new): validated, transactional, idempotent odds ingestion,
-  duplicate detection and source/hash/import metadata.
-- `import_fighters.py`: additive schema creation and fighter upserts preserving
-  cached photos and IDs; existing importer entry point retained.
-- `templates/base.html`: Betting navbar link.
-- `templates/betting.html` (new): year/division filters, win/loss summaries,
-  accessible HTML/CSS charts and tables, sample counts and methodology.
-- `templates/_fighter_betting.html` (new): favorite/underdog records, largest
-  recorded upset and expandable historical odds/results.
-- `templates/_metric_notes.html` (new): strengths and potential weaknesses based
-  on imported career metrics, with explicit editorial thresholds.
-- `templates/fighter_profile.html`: adds both new sections after existing content.
-- `templates/compare.html`: adds each fighter's historical context and metrics.
-- `static/style.css`: additive styling for the new sections and mobile layout.
-- `tests/test_betting.py` (new): calculation boundaries, exclusions, idempotency,
-  malformed/conflicting imports, name matching, photo/ID preservation and routes.
-- `data/ultimate_ufc_dataset.csv` (new): original public source snapshot.
-- `fightiq.db`: adds `historical_odds` and `odds_imports` with indexes; existing
-  fighter and fight rows retained.
-- `README.md` (new): run commands, methodology and validation.
+FightIQ demonstrates practical skills in Python, data engineering, SQL, Flask backend development, ETL pipelines, analytics, frontend development, API integration, database design, testing, and Git/GitHub workflow.
 
-## Source and methodology
+## Disclaimer
 
-Source: [TidyTuesday UFC data, July 7, 2026](https://github.com/rfordatascience/tidytuesday/tree/main/data/2026/2026-07-07),
-`ultimate_ufc_dataset.csv`. The supplied snapshot has 7,177 unique bouts from
-2010-03-21 through 2026-03-28. The first and last years are partial coverage.
-It is a historical snapshot, not live odds or current UFC results. The source's
-specific bookmaker and opening/closing timing are not verified.
+Historical betting analytics in FightIQ are descriptive only.
 
-Favorite = higher implied probability using both valid American moneylines:
-negative −a => a/(a+100); positive +a => 100/(a+100). Odds must be finite with
-absolute value >= 100. Both-negative and both-positive lines are supported.
-Equal implied probabilities (including −100/+100) are tied prices.
+They are not betting recommendations, guarantees, or predictions of future fight outcomes.
 
-Eligible bouts have two valid unequal odds and a Red or Blue winner. Exclusions
-are applied in order: missing/invalid odds, tied prices, non-decisive result.
-The snapshot has 253, 120 and 8 in these groups respectively. Rates use 6,796
-eligible bouts: 4,524 favorite wins and 2,272 underdog wins (33.4% upsets).
-Every favorite loss equals one underdog win. Bucket charts use fighter
-appearances, two per eligible bout, while year/division charts use bouts.
-Women's divisions are kept separate using source gender. Filters affect all
-Betting page summaries and charts together.
+## Author
 
-Fighter matching normalizes case, accents and punctuation; unmatched spelling
-variants/aliases may reduce coverage. A fighter's biggest upset is the eligible
-underdog win with the lowest implied probability in the available dataset.
-A zero sample is shown as N/A, never a 0% measured rate. Tables expose the
-numeric chart values without requiring a chart library or external CDN.
+**Yousef Aladwan**
 
-Descriptive strengths and potential weaknesses use fixed editorial thresholds
-shown with each note. These are career metrics, not necessarily values known
-before a historical matchup. They are not empirically validated prediction
-rules. Legacy zero values are omitted because the original importer represents
-both missing and genuine zero values as zero. These sections make no claims
-about future wins or profitability.
-
-## Validation
-
-Eight automated tests pass, including all existing route types and the new
-Betting page; external photo lookups are mocked in automated route tests.
-The original 4,504 fighters and 8,736 fight records were compared field by field
-against the working copy and were identical before applying the upgrade.
-Browser checks cover live autocomplete, comparison, profile history, Betting
-filters and dark layout. Photo rendering still depends on Wikimedia availability.
+GitHub: https://github.com/Adwan2006
