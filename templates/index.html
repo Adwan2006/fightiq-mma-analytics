@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+FightIQ | MMA Analytics
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <p class="eyebrow">
+            DATA-DRIVEN MMA ANALYTICS
+        </p>
+
+
+        <h1>
+            Understand fighters
+            <span>
+                through data.
+            </span>
+        </h1>
+
+
+        <p class="hero-text">
+
+            Explore thousands of fighters,
+            compare performance metrics and
+            discover MMA trends using a
+            Python-powered analytics platform.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="/fighters"
+                class="primary-button"
+            >
+                Explore Fighters
+            </a>
+
+
+            <a
+                href="/compare"
+                class="secondary-button"
+            >
+                Compare Fighters
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="platform-stats">
+
+    <div class="platform-stat">
+
+        <h3>
+            {{ fighter_count }}
+        </h3>
+
+        <p>
+            Fighters
+        </p>
+
+    </div>
+
+
+    <div class="platform-stat">
+
+        <h3>
+            Python
+        </h3>
+
+        <p>
+            Backend & ETL
+        </p>
+
+    </div>
+
+
+    <div class="platform-stat">
+
+        <h3>
+            SQLite
+        </h3>
+
+        <p>
+            Analytics Database
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="features">
+
+    <p class="eyebrow center">
+        PLATFORM
+    </p>
+
+
+    <h2>
+        One platform.
+        Thousands of fighters.
+    </h2>
+
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <h3>
+                Fighter Profiles
+            </h3>
+
+            <p>
+                Explore records, striking,
+                grappling, physical attributes
+                and defensive statistics.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h3>
+                Fighter Comparison
+            </h3>
+
+            <p>
+                Compare two athletes side by
+                side across meaningful
+                performance metrics.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h3>
+                Analytics
+            </h3>
+
+            <p>
+                Discover striking, grappling
+                and divisional trends across
+                the fighter database.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{% endblock %}

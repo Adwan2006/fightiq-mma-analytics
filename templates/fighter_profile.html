@@ -1,0 +1,670 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+{{ fighter.name }} | FightIQ
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="fighter-profile-hero">
+
+
+    <div class="profile-image-side">
+
+        {% if fighter.image_url %}
+
+        <img
+            class="profile-fighter-image"
+            src="{{ fighter.image_url }}"
+            alt="{{ fighter.name }}"
+        >
+
+        {% else %}
+
+        <div class="profile-image-placeholder">
+
+            <span>
+                FIQ
+            </span>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="profile-title-side">
+
+        <p class="eyebrow">
+            {{ fighter.weight_class }}
+        </p>
+
+
+        <h1>
+            {{ fighter.name }}
+        </h1>
+
+
+        <p class="profile-record">
+            {{ fighter.record }}
+        </p>
+
+
+        {% if fighter.stance %}
+
+        <p class="profile-subtitle">
+            {{ fighter.stance }} stance
+        </p>
+
+        {% endif %}
+
+
+        {% if fighter.image_url and fighter.image_page_url %}
+
+        <a
+            class="photo-credit"
+            href="{{ fighter.image_page_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+
+            Photo source: Wikimedia
+
+            {% if fighter.image_license %}
+
+            · {{ fighter.image_license }}
+
+            {% endif %}
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+
+</section>
+
+
+<section class="content-container">
+
+
+    <!-- ==========================
+         CAREER
+    =========================== -->
+
+    <h2 class="section-title">
+        Career
+    </h2>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <span>
+                Career Wins
+            </span>
+
+            <h3>
+                {{ fighter.wins }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Career Losses
+            </span>
+
+            <h3>
+                {{ fighter.losses }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Career Draws
+            </span>
+
+            <h3>
+                {{ fighter.draws }}
+            </h3>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         UFC RECORD SUMMARY
+    =========================== -->
+
+    {% if fight_summary.ufc_fights > 0 %}
+
+    <h2 class="section-title profile-section">
+        UFC History
+    </h2>
+
+
+    <div class="ufc-summary-grid">
+
+        <div class="stat-card">
+
+            <span>
+                UFC Fights
+            </span>
+
+            <h3>
+                {{ fight_summary.ufc_fights }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                UFC Wins
+            </span>
+
+            <h3>
+                {{ fight_summary.ufc_wins }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                UFC Losses
+            </span>
+
+            <h3>
+                {{ fight_summary.ufc_losses }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                KO/TKO Wins
+            </span>
+
+            <h3>
+                {{ fight_summary.ko_tko_wins }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Submission Wins
+            </span>
+
+            <h3>
+                {{ fight_summary.submission_wins }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Decision Wins
+            </span>
+
+            <h3>
+                {{ fight_summary.decision_wins }}
+            </h3>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- ==========================
+         STRIKING
+    =========================== -->
+
+    <h2 class="section-title profile-section">
+        Striking
+    </h2>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <span>
+                Sig. Strikes Landed / Min
+            </span>
+
+            <h3>
+                {{ fighter.significant_strikes_per_minute }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Striking Accuracy
+            </span>
+
+            <h3>
+                {{ fighter.striking_accuracy }}%
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Sig. Strikes Absorbed / Min
+            </span>
+
+            <h3>
+                {{ fighter.significant_strikes_absorbed_per_minute }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Strike Defense
+            </span>
+
+            <h3>
+                {{ fighter.striking_defense }}%
+            </h3>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         GRAPPLING
+    =========================== -->
+
+    <h2 class="section-title profile-section">
+        Grappling
+    </h2>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <span>
+                Takedowns / 15 Min
+            </span>
+
+            <h3>
+                {{ fighter.takedown_average }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Takedown Accuracy
+            </span>
+
+            <h3>
+                {{ fighter.takedown_accuracy }}%
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Takedown Defense
+            </span>
+
+            <h3>
+                {{ fighter.takedown_defense }}%
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Submissions / 15 Min
+            </span>
+
+            <h3>
+                {{ fighter.submission_average }}
+            </h3>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         PHYSICAL PROFILE
+    =========================== -->
+
+    <h2 class="section-title profile-section">
+        Physical Profile
+    </h2>
+
+
+    <div class="physical-grid">
+
+        <div>
+
+            <span>
+                Height
+            </span>
+
+            <strong>
+                {{ fighter.height or "N/A" }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Weight
+            </span>
+
+            <strong>
+                {{ fighter.weight or "N/A" }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Reach
+            </span>
+
+            <strong>
+                {{ fighter.reach or "N/A" }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Stance
+            </span>
+
+            <strong>
+                {{ fighter.stance or "N/A" }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Date of Birth
+            </span>
+
+            <strong>
+                {{ fighter.date_of_birth or "N/A" }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         FIGHT HISTORY
+    =========================== -->
+
+    <section class="fight-history-section">
+
+
+        <div class="fight-history-heading">
+
+            <div>
+
+                <p class="eyebrow">
+                    UFC RECORD
+                </p>
+
+                <h2>
+                    Fight History
+                </h2>
+
+            </div>
+
+
+            {% if fight_history %}
+
+            <span class="fight-count-badge">
+
+                {{ fight_history|length }}
+                UFC fights
+
+            </span>
+
+            {% endif %}
+
+        </div>
+
+
+        {% if fight_history %}
+
+
+        <div class="fight-history-list">
+
+
+            {% for fight in fight_history %}
+
+
+            <article class="fight-history-card">
+
+
+                <div class="fight-result-side">
+
+
+                    {% if fight.result == "W" %}
+
+                    <span class="fight-result win">
+                        W
+                    </span>
+
+
+                    {% elif fight.result == "L" %}
+
+                    <span class="fight-result loss">
+                        L
+                    </span>
+
+
+                    {% elif fight.result == "D" %}
+
+                    <span class="fight-result draw">
+                        D
+                    </span>
+
+
+                    {% else %}
+
+                    <span class="fight-result nc">
+                        NC
+                    </span>
+
+                    {% endif %}
+
+
+                </div>
+
+
+                <div class="fight-main-info">
+
+
+                    <div class="fight-opponent-line">
+
+                        <span class="fight-vs">
+                            vs
+                        </span>
+
+                        <strong>
+                            {{ fight.opponent }}
+                        </strong>
+
+                    </div>
+
+
+                    <h3>
+                        {{ fight.event_name }}
+                    </h3>
+
+
+                    <div class="fight-meta">
+
+                        {% if fight.fight_date %}
+
+                        <span>
+                            {{ fight.fight_date }}
+                        </span>
+
+                        {% endif %}
+
+
+                        {% if fight.weight_class %}
+
+                        <span>
+                            {{ fight.weight_class }}
+                        </span>
+
+                        {% endif %}
+
+
+                        {% if fight.location %}
+
+                        <span>
+                            {{ fight.location }}
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="fight-finish-info">
+
+
+                    <strong>
+                        {{ fight.method or "Scheduled" }}
+                    </strong>
+
+
+                    {% if fight.round %}
+
+                    <span>
+
+                        Round
+                        {{ fight.round }}
+
+                        {% if fight.display_time %}
+
+                        ·
+                        {{ fight.display_time }}
+
+                        {% endif %}
+
+                    </span>
+
+                    {% endif %}
+
+
+                    {% if fight.referee %}
+
+                    <small>
+                        Ref: {{ fight.referee }}
+                    </small>
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </article>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="fight-history-empty">
+
+            No UFC fight history was found
+            for this fighter in the dataset.
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+    <a
+        class="back-link"
+        href="/fighters"
+    >
+        ← Back to Fighters
+    </a>
+
+
+</section>
+
+
+<section class="content-container historical-section">
+{% include '_fighter_betting.html' %}
+{% include '_metric_notes.html' %}
+</section>
+{% endblock %}

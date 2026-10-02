@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Historical Betting Analytics | FightIQ{% endblock %}
+{% block content %}
+<section class="page-header"><p class="eyebrow">THE HISTORICAL RECORD</p><h1>Betting Analytics</h1><p>Favorites, underdogs and the upsets that shaped UFC history.</p></section>
+<section class="content-container historical-section">
+<p class="historical-notice">Historical/descriptive analytics only. These results are not guaranteed predictions, betting picks, live odds or evidence of future profitability.</p>
+<p class="historical-note">Source: <a href="{{ source_page }}">TidyTuesday · UFC data · July 7, 2026</a>. {% if coverage %}Imported coverage: {{ coverage[0] }} through {{ coverage[1] }}.{% endif %} Historical source snapshot; sportsbook and opening/closing timing are not verified.</p>
+<form class="historical-filters" method="get">
+<label>Division <select name="division"><option value="">All divisions</option>{% for d in divisions %}<option {% if d==division %}selected{% endif %}>{{ d }}</option>{% endfor %}</select></label>
+<label>Year <select name="year"><option value="">All years</option>{% for y in years %}<option {% if y==year %}selected{% endif %}>{{ y }}</option>{% endfor %}</select></label>
+<button type="submit">Apply filters</button><a href="{{ url_for('betting') }}">Reset</a></form>
+{% set s=data.summary %}
+<div class="historical-grid historical-stats">
+<article class="historical-card"><span>Favorite wins / losses</span><strong>{{ s.favorite_wins }} / {{ s.favorite_losses }}</strong></article>
+<article class="historical-card"><span>Underdog wins / losses</span><strong>{{ s.underdog_wins }} / {{ s.underdog_losses }}</strong></article>
+<article class="historical-card"><span>Upset rate</span><strong>{{ s.upset_rate|rate }}</strong><small>{{ s.eligible }} eligible bouts</small></article>
+</div>
+{% if not s.total %}<p class="historical-notice">No historical bouts available for this selection. Try clearing the filters or importing the historical dataset.</p>{% endif %}
+<p class="historical-note">{{ s.total }} selected bouts; {{ s.excluded }} excluded: {{ s.missing }} missing/invalid odds, {{ s.tied }} tied prices, {{ s.non_decisive }} remaining draws/no contests. Exclusions are applied in that order and do not overlap.</p>
+<div class="historical-grid">
+<article class="historical-card"><h2>Win share</h2>
+{% for label, wins in [('Favorites',s.favorite_wins),('Underdogs',s.underdog_wins)] %}
+<div class="history-bar"><span>{{ label }} · {{ wins }} wins</span><div class="history-track"><div style="width: {{ (100*wins/s.eligible) if s.eligible else 0 }}%"></div></div></div>
+{% endfor %}</article>
+<article class="historical-card"><h2>Performance by American odds</h2><p class="historical-note">Fighter appearances; two observations per eligible bout. Price buckets do not imply favorite/underdog status.</p>
+<div class="historical-table"><table><thead><tr><th>Odds</th><th>W–L</th><th>Win rate</th></tr></thead><tbody>
+{% for b in data.buckets %}<tr><td>{{ b.label }}</td><td>{{ b.wins }}–{{ b.losses }}</td><td>{{ b.rate|rate }}<div class="history-track"><div style="width: {{ b.rate or 0 }}%"></div></div></td></tr>{% endfor %}
+</tbody></table></div></article>
+</div>
+{% for title, groups in [('Upset rate by year',data.years),('Upset rate by division',data.divisions)] %}
+<article class="historical-card"><h2>{{ title }}</h2><p class="historical-note">Percentage of eligible bouts won by the underdog. Small samples can be volatile; the first and latest covered years may be partial.</p>
+{% for row in groups %}<div class="history-bar"><span>{{ row.label }} <b>{{ row.upset_rate|rate }}</b> <small>{{ row.underdog_wins }} upsets / {{ row.eligible }} bouts</small></span><div class="history-track"><div style="width: {{ row.upset_rate or 0 }}%"></div></div></div>{% else %}<p>No eligible bouts.</p>{% endfor %}
+</article>{% endfor %}
+<article class="historical-card"><h2>How to read these results</h2>
+<p>A favorite is the fighter with the higher implied probability from the two American moneylines: −a uses a/(a+100), +a uses 100/(a+100). Equal implied probabilities are tied prices. An upset is an eligible underdog win. Rates use decisive bouts with two valid, unequal prices; draws and no contests are excluded. Every favorite loss is an underdog win.</p>
+<p>Odds include bookmaker margin. No margin removal, return simulation or predictive model is used. Missing bouts, historical result revisions and name differences can affect coverage. These records supplement the existing fight history, which may have a different source cutoff.</p>
+{% if metadata %}<p class="historical-note">Latest import (UTC): {{ metadata.imported_at }} · {{ metadata.rows_stored }} distinct bouts in that import.</p>{% endif %}
+</article></section>
+{% endblock %}

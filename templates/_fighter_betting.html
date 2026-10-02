@@ -1,0 +1,19 @@
+{% set history = fighter_betting(fighter) %}
+<article class="historical-card">
+<h2>{{ fighter.name }} · Historical odds</h2>
+<p class="historical-note">Historical/descriptive analytics, not guaranteed predictions or picks.</p>
+<div class="historical-table"><table>
+<thead><tr><th>Role</th><th>Wins</th><th>Losses</th><th>Win rate</th><th>Bouts</th></tr></thead>
+<tbody>{% for r in history.records %}<tr><td>{{ r.role }}</td><td>{{ r.wins }}</td><td>{{ r.losses }}</td><td>{{ r.rate|rate }}</td><td>{{ r.total }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% if history.biggest %}
+<p><strong>Biggest recorded upset:</strong> beat {{ history.biggest.opponent }} at {{ history.biggest.odds|odds }} on {{ history.biggest.fight_date }}.</p>
+<p class="historical-note">Largest underdog price among this fighter’s eligible wins in the dataset.</p>
+{% else %}<p>No eligible underdog win recorded in this dataset.</p>{% endif %}
+<p class="historical-note">{{ history.excluded }} excluded bouts. Names matched after case, accent and punctuation normalization; unmatched aliases may reduce coverage. <a href="{{ url_for('betting') }}">Coverage and methodology</a></p>
+<details><summary>Historical bout odds ({{ history.history|length }})</summary>
+<div class="historical-table"><table>
+<thead><tr><th>Date</th><th>Opponent</th><th>Odds</th><th>Role</th><th>Result</th></tr></thead>
+<tbody>{% for r in history.history %}<tr><td>{{ r.fight_date }}</td><td>{{ r.opponent }}</td><td>{{ r.odds|odds }}</td><td>{{ r.role }}{% if r.role=='Excluded' %}: {{ r.status }}{% endif %}</td><td>{{ r.result }}</td></tr>{% else %}<tr><td colspan="5">No matched historical odds available.</td></tr>{% endfor %}</tbody>
+</table></div></details>
+</article>

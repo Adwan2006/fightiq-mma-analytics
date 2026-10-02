@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Fighters | FightIQ
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="page-header">
+
+    <p class="eyebrow">
+        FIGHTER DATABASE
+    </p>
+
+    <h1>
+        Explore Fighters
+    </h1>
+
+    <p>
+        Search thousands of MMA fighters
+        and explore their performance data.
+    </p>
+
+</section>
+
+
+<section class="content-container">
+
+
+    <form
+        class="fighter-filter"
+        action="/fighters"
+        method="GET"
+    >
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search fighter..."
+            value="{{ search }}"
+        >
+
+
+        <select name="division">
+
+            <option value="">
+                All Weight Classes
+            </option>
+
+
+            {% for item in divisions %}
+
+            <option
+                value="{{ item }}"
+
+                {% if division == item %}
+                selected
+                {% endif %}
+            >
+                {{ item }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+
+    <p class="results-info">
+        {{ total }} fighters found
+    </p>
+
+
+    {% if fighters %}
+
+
+    <div class="fighter-grid">
+
+
+        {% for fighter in fighters %}
+
+
+        <a
+            class="fighter-card-link"
+            href="/fighter/{{ fighter.slug }}"
+        >
+
+
+            <article class="fighter-card">
+
+
+                <div class="fighter-photo-wrap">
+
+                    {% if fighter.image_url %}
+
+                    <img
+                        class="fighter-photo"
+                        src="{{ fighter.image_url }}"
+                        alt="{{ fighter.name }}"
+                        loading="lazy"
+                    >
+
+                    {% else %}
+
+                    <div class="fighter-photo-placeholder">
+
+                        <span>
+                            FIQ
+                        </span>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="fighter-card-body">
+
+                    <p class="division">
+                        {{ fighter.weight_class }}
+                    </p>
+
+
+                    <h2>
+                        {{ fighter.name }}
+                    </h2>
+
+
+                    <p class="record">
+                        {{ fighter.record }}
+                    </p>
+
+
+                    <div class="mini-stats">
+
+
+                        <div>
+
+                            <strong>
+                                {{ fighter.striking_accuracy }}%
+                            </strong>
+
+                            <span>
+                                STR ACC
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                {{ fighter.takedown_accuracy }}%
+                            </strong>
+
+                            <span>
+                                TD ACC
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                {{ fighter.significant_strikes_per_minute }}
+                            </strong>
+
+                            <span>
+                                SLPM
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </article>
+
+
+        </a>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+    <div class="pagination">
+
+
+        {% if page > 1 %}
+
+        <a
+            class="pagination-button"
+
+            href="/fighters?page={{ page - 1 }}&search={{ search }}&division={{ division }}"
+        >
+
+            ← Previous
+
+        </a>
+
+        {% endif %}
+
+
+        <span>
+
+            Page {{ page }}
+
+            {% if total_pages %}
+
+            of {{ total_pages }}
+
+            {% endif %}
+
+        </span>
+
+
+        {% if page < total_pages %}
+
+        <a
+            class="pagination-button"
+
+            href="/fighters?page={{ page + 1 }}&search={{ search }}&division={{ division }}"
+        >
+
+            Next →
+
+        </a>
+
+        {% endif %}
+
+
+    </div>
+
+
+    {% else %}
+
+
+    <div class="empty-state">
+
+        <h2>
+            No fighters found
+        </h2>
+
+        <p>
+            Try another search.
+        </p>
+
+    </div>
+
+
+    {% endif %}
+
+
+</section>
+
+
+{% endblock %}

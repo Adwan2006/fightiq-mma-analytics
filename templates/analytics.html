@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Analytics | FightIQ
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="page-header">
+
+    <p class="eyebrow">
+        DATABASE ANALYTICS
+    </p>
+
+
+    <h1>
+        FightIQ Analytics
+    </h1>
+
+
+    <p>
+        Aggregate statistics across
+        thousands of MMA fighters.
+    </p>
+
+</section>
+
+
+<section class="content-container">
+
+
+    <div class="analytics-grid">
+
+
+        <div class="stat-card">
+
+            <span>
+                Fighters
+            </span>
+
+            <h3>
+                {{ fighter_count }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Avg Striking Accuracy
+            </span>
+
+            <h3>
+                {{ average_striking_accuracy }}%
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Avg Takedown Accuracy
+            </span>
+
+            <h3>
+                {{ average_takedown_accuracy }}%
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Avg SLPM
+            </span>
+
+            <h3>
+                {{ average_slpm }}
+            </h3>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Avg Takedown Defense
+            </span>
+
+            <h3>
+                {{ average_td_defense }}%
+            </h3>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="analytics-columns">
+
+
+        <section class="ranking-panel">
+
+            <h2>
+                Highest SLPM
+            </h2>
+
+
+            {% for fighter in top_strikers %}
+
+
+            <div class="ranking-row">
+
+                <span>
+                    {{ loop.index }}.
+                    {{ fighter.name }}
+                </span>
+
+                <strong>
+                    {{ fighter.significant_strikes_per_minute }}
+                </strong>
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </section>
+
+
+        <section class="ranking-panel">
+
+            <h2>
+                Highest Takedown Average
+            </h2>
+
+
+            {% for fighter in top_grapplers %}
+
+
+            <div class="ranking-row">
+
+                <span>
+                    {{ loop.index }}.
+                    {{ fighter.name }}
+                </span>
+
+                <strong>
+                    {{ fighter.takedown_average }}
+                </strong>
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </section>
+
+
+    </div>
+
+
+    <section class="ranking-panel division-panel">
+
+        <h2>
+            Fighters by Weight Class
+        </h2>
+
+
+        {% for division in divisions %}
+
+
+        <div class="ranking-row">
+
+            <span>
+                {{ division.weight_class }}
+            </span>
+
+            <strong>
+                {{ division.total }}
+            </strong>
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </section>
+
+
+</section>
+
+
+{% endblock %}

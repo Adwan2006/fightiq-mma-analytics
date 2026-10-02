@@ -1,0 +1,9 @@
+{% set notes = metric_notes(fighter) %}
+<article class="historical-card">
+<h3>Descriptive strengths &amp; weaknesses</h3>
+<p class="historical-note">Current imported career metrics, not pre-fight forecasts. Fixed editorial thresholds shown below; these are not validated predictors. Zero or missing values are omitted because the existing importer does not distinguish them.</p>
+<h4>Strength indicators</h4>
+<ul>{% for note in notes.strengths %}<li>{{ note }}</li>{% else %}<li>No available metric meets the strength thresholds.</li>{% endfor %}</ul>
+<h4>Potential weaknesses / lower activity</h4>
+<ul>{% for note in notes.weaknesses %}<li>{{ note }}</li>{% else %}<li>No available metric meets the weakness thresholds.</li>{% endfor %}</ul>
+</article>

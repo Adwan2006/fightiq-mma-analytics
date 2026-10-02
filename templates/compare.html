@@ -1,0 +1,808 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Compare Fighters | FightIQ
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="page-header">
+
+    <p class="eyebrow">
+        HEAD TO HEAD
+    </p>
+
+    <h1>
+        Compare Fighters
+    </h1>
+
+    <p>
+        Search two fighters and compare
+        their career, striking, grappling
+        and physical statistics.
+    </p>
+
+</section>
+
+
+<section class="content-container">
+
+
+    <form
+        class="fighter-compare-search"
+        method="GET"
+        action="/compare"
+        id="compare-form"
+    >
+
+
+        <!-- FIGHTER ONE -->
+
+        <div
+            class="fighter-autocomplete"
+            data-number="1"
+        >
+
+            <label>
+                FIGHTER ONE
+            </label>
+
+
+            <div class="compare-search-input-wrap">
+
+                <input
+                    type="text"
+                    id="fighter1-input"
+                    name="fighter1"
+                    placeholder="Search fighter..."
+                    value="{{ fighter1_name }}"
+                    autocomplete="off"
+                    required
+                >
+
+                <input
+                    type="hidden"
+                    id="fighter1-id"
+                    name="fighter1_id"
+                    value="{{ fighter1_id }}"
+                >
+
+            </div>
+
+
+            <div
+                class="autocomplete-results"
+                id="fighter1-results"
+            >
+            </div>
+
+        </div>
+
+
+        <div class="big-vs">
+            VS
+        </div>
+
+
+        <!-- FIGHTER TWO -->
+
+        <div
+            class="fighter-autocomplete"
+            data-number="2"
+        >
+
+            <label>
+                FIGHTER TWO
+            </label>
+
+
+            <div class="compare-search-input-wrap">
+
+                <input
+                    type="text"
+                    id="fighter2-input"
+                    name="fighter2"
+                    placeholder="Search fighter..."
+                    value="{{ fighter2_name }}"
+                    autocomplete="off"
+                    required
+                >
+
+                <input
+                    type="hidden"
+                    id="fighter2-id"
+                    name="fighter2_id"
+                    value="{{ fighter2_id }}"
+                >
+
+            </div>
+
+
+            <div
+                class="autocomplete-results"
+                id="fighter2-results"
+            >
+            </div>
+
+        </div>
+
+
+        <button
+            class="compare-main-button"
+            type="submit"
+        >
+            Compare Fighters
+        </button>
+
+
+    </form>
+
+
+    {% if fighter1_name and not fighter1 %}
+
+    <div class="compare-error">
+
+        Fighter "{{ fighter1_name }}"
+        was not found.
+
+    </div>
+
+    {% endif %}
+
+
+    {% if fighter2_name and not fighter2 %}
+
+    <div class="compare-error">
+
+        Fighter "{{ fighter2_name }}"
+        was not found.
+
+    </div>
+
+    {% endif %}
+
+
+    {% if fighter1 and fighter2 %}
+
+
+    <section class="fighter-versus-header">
+
+
+        <!-- LEFT FIGHTER -->
+
+        <div class="versus-fighter-card">
+
+
+            <div class="compare-fighter-image-wrap">
+
+
+                {% if fighter1.image_url %}
+
+                <img
+                    class="compare-fighter-image"
+                    src="{{ fighter1.image_url }}"
+                    alt="{{ fighter1.name }}"
+                >
+
+                {% else %}
+
+                <div class="compare-image-placeholder">
+
+                    <span>
+                        FIQ
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+            <div class="compare-fighter-info">
+
+                <p class="division">
+                    {{ fighter1.weight_class }}
+                </p>
+
+
+                <h2>
+                    {{ fighter1.name }}
+                </h2>
+
+
+                <strong>
+                    {{ fighter1.record }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="versus-middle">
+            VS
+        </div>
+
+
+        <!-- RIGHT FIGHTER -->
+
+        <div class="versus-fighter-card">
+
+
+            <div class="compare-fighter-image-wrap">
+
+
+                {% if fighter2.image_url %}
+
+                <img
+                    class="compare-fighter-image"
+                    src="{{ fighter2.image_url }}"
+                    alt="{{ fighter2.name }}"
+                >
+
+                {% else %}
+
+                <div class="compare-image-placeholder">
+
+                    <span>
+                        FIQ
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+            <div class="compare-fighter-info">
+
+                <p class="division">
+                    {{ fighter2.weight_class }}
+                </p>
+
+
+                <h2>
+                    {{ fighter2.name }}
+                </h2>
+
+
+                <strong>
+                    {{ fighter2.record }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <section class="comparison-table">
+
+
+        <div class="comparison-category">
+            <h3>CAREER</h3>
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.wins }}
+            </strong>
+
+            <span>
+                Wins
+            </span>
+
+            <strong>
+                {{ fighter2.wins }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.losses }}
+            </strong>
+
+            <span>
+                Losses
+            </span>
+
+            <strong>
+                {{ fighter2.losses }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.draws }}
+            </strong>
+
+            <span>
+                Draws
+            </span>
+
+            <strong>
+                {{ fighter2.draws }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-category">
+            <h3>STRIKING</h3>
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.significant_strikes_per_minute }}
+            </strong>
+
+            <span>
+                Sig. Strikes / Min
+            </span>
+
+            <strong>
+                {{ fighter2.significant_strikes_per_minute }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.striking_accuracy }}%
+            </strong>
+
+            <span>
+                Striking Accuracy
+            </span>
+
+            <strong>
+                {{ fighter2.striking_accuracy }}%
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.significant_strikes_absorbed_per_minute }}
+            </strong>
+
+            <span>
+                Strikes Absorbed / Min
+            </span>
+
+            <strong>
+                {{ fighter2.significant_strikes_absorbed_per_minute }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.striking_defense }}%
+            </strong>
+
+            <span>
+                Strike Defense
+            </span>
+
+            <strong>
+                {{ fighter2.striking_defense }}%
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-category">
+            <h3>GRAPPLING</h3>
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.takedown_average }}
+            </strong>
+
+            <span>
+                Takedowns / 15 Min
+            </span>
+
+            <strong>
+                {{ fighter2.takedown_average }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.takedown_accuracy }}%
+            </strong>
+
+            <span>
+                Takedown Accuracy
+            </span>
+
+            <strong>
+                {{ fighter2.takedown_accuracy }}%
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.takedown_defense }}%
+            </strong>
+
+            <span>
+                Takedown Defense
+            </span>
+
+            <strong>
+                {{ fighter2.takedown_defense }}%
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.submission_average }}
+            </strong>
+
+            <span>
+                Submissions / 15 Min
+            </span>
+
+            <strong>
+                {{ fighter2.submission_average }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-category">
+            <h3>PHYSICAL</h3>
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.height or "N/A" }}
+            </strong>
+
+            <span>
+                Height
+            </span>
+
+            <strong>
+                {{ fighter2.height or "N/A" }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.reach or "N/A" }}
+            </strong>
+
+            <span>
+                Reach
+            </span>
+
+            <strong>
+                {{ fighter2.reach or "N/A" }}
+            </strong>
+
+        </div>
+
+
+        <div class="comparison-row">
+
+            <strong>
+                {{ fighter1.stance or "N/A" }}
+            </strong>
+
+            <span>
+                Stance
+            </span>
+
+            <strong>
+                {{ fighter2.stance or "N/A" }}
+            </strong>
+
+        </div>
+
+
+    </section>
+
+
+    {% endif %}
+
+
+</section>
+
+
+<script>
+
+function setupFighterSearch(number) {
+
+    const input =
+        document.getElementById(
+            `fighter${number}-input`
+        );
+
+    const hiddenInput =
+        document.getElementById(
+            `fighter${number}-id`
+        );
+
+    const resultsBox =
+        document.getElementById(
+            `fighter${number}-results`
+        );
+
+    let timer = null;
+
+
+    input.addEventListener(
+        "input",
+        function () {
+
+            hiddenInput.value = "";
+
+            clearTimeout(timer);
+
+            const query =
+                input.value.trim();
+
+            if (query.length < 2) {
+
+                resultsBox.innerHTML = "";
+
+                resultsBox.classList.remove(
+                    "show"
+                );
+
+                return;
+            }
+
+
+            timer = setTimeout(
+                async function () {
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                "/api/fighter-search?q="
+                                + encodeURIComponent(
+                                    query
+                                )
+                            );
+
+                        const fighters =
+                            await response.json();
+
+                        renderResults(
+                            fighters
+                        );
+
+                    }
+
+                    catch (error) {
+
+                        resultsBox.innerHTML = "";
+
+                        resultsBox.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                },
+                250
+            );
+
+        }
+    );
+
+
+    function renderResults(
+        fighters
+    ) {
+
+        resultsBox.innerHTML = "";
+
+        if (!fighters.length) {
+
+            resultsBox.innerHTML = `
+                <div class="autocomplete-empty">
+                    No fighter found
+                </div>
+            `;
+
+            resultsBox.classList.add(
+                "show"
+            );
+
+            return;
+        }
+
+
+        fighters.forEach(
+            function (fighter) {
+
+                const item =
+                    document.createElement(
+                        "button"
+                    );
+
+                item.type = "button";
+
+                item.className =
+                    "autocomplete-item";
+
+
+                let imageHTML;
+
+                if (fighter.image_url) {
+
+                    imageHTML = `
+                        <img
+                            src="${fighter.image_url}"
+                            alt=""
+                            class="autocomplete-image"
+                        >
+                    `;
+
+                }
+
+                else {
+
+                    imageHTML = `
+                        <div
+                            class="autocomplete-image-placeholder"
+                        >
+                            FIQ
+                        </div>
+                    `;
+
+                }
+
+
+                item.innerHTML = `
+
+                    ${imageHTML}
+
+                    <div
+                        class="autocomplete-text"
+                    >
+
+                        <strong>
+                            ${fighter.name}
+                        </strong>
+
+                        <span>
+                            ${fighter.record}
+                            ·
+                            ${fighter.weight_class}
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                item.addEventListener(
+                    "click",
+                    function () {
+
+                        input.value =
+                            fighter.name;
+
+                        hiddenInput.value =
+                            fighter.id;
+
+                        resultsBox.innerHTML =
+                            "";
+
+                        resultsBox.classList.remove(
+                            "show"
+                        );
+
+                    }
+                );
+
+
+                resultsBox.appendChild(
+                    item
+                );
+
+            }
+        );
+
+
+        resultsBox.classList.add(
+            "show"
+        );
+
+    }
+
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                !resultsBox.contains(
+                    event.target
+                )
+                &&
+                event.target !== input
+            ) {
+
+                resultsBox.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+setupFighterSearch(1);
+setupFighterSearch(2);
+
+</script>
+
+
+{% if fighter1 and fighter2 %}
+<section class="content-container historical-section">
+<h2>Historical betting context</h2>
+<p class="historical-note">Separate past records, not odds for this matchup or a prediction. Opponents, eras and sample sizes differ.</p>
+<div class="historical-grid">
+{% for fighter in [fighter1, fighter2] %}
+<div>{% include '_fighter_betting.html' %}{% include '_metric_notes.html' %}</div>
+{% endfor %}
+</div>
+</section>
+{% endif %}
+{% endblock %}
